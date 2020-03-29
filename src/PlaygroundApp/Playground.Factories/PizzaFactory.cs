@@ -1,17 +1,27 @@
 ﻿using System;
 
-namespace Design.Deoms
+namespace Playground.Factories
 {
+    public interface IPizza { }
+
+    public class SimplePizza : IPizza { }
+
     /// <summary>
-    /// Summary description for Class1
+    /// Sample demonstaring factoriy evolution concept:
+    /// starting from "Simple Factory" and ending with "Builder"
     /// </summary>
-    public class Class1
+    public class PizzaFactory
     {
-        public Class1()
+        public IPizza PreparePizza()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            return BuildPizza_SimpleFactory();
+        }
+
+        private IPizza BuildPizza(string pizzaName) => new SimplePizza();
+
+        private IPizza BuildPizza_SimpleFactory()
+        {
+            return BuildPizza("menu-item-3");
         }
     }
 
@@ -19,22 +29,22 @@ namespace Design.Deoms
     public class PizzaCheese { }
     public class PizzaToppings { }
 
-    public class SimplePizza : IPizza { }
     public class CustomPizza : IPizza
     {
         public CustomPizza (PizzaCrust pizzaCrust, PizzaCheese pizzaCheese, PizzaToppings pizzaToppings) { }
     }
 
-    public interface IPizza { }
     public interface IPizzaFactory {
         IPizza Build(string pizzaName);
     }
+
     public interface IPizzaAbstractFactory
     {
         PizzaCrust BuildCrust(string crustName);
         PizzaCheese BuildCheese(string cheeseName);
         PizzaToppings BuildToppings(string[] toppingNames);
     }
+
     public interface IPizzaBuilder
     {
         IPizzaBuilder SetCrust(string crustName);
@@ -50,12 +60,6 @@ namespace Design.Deoms
         private IPizzaAbstractFactory _pizzaAbstractFactory;
         private IPizzaBuilder _pizzaBuilder;
 
-        protected IPizza BuildPizza(string pizzaName) => new SimplePizza();
-
-        public void BuildPizza_SimpleFactory()
-        {
-            _pizza = BuildPizza("menu-item-3");
-        }
         public void BuildPizza_FactoryMethod()
         {
             _pizza = _pizzaFactory.Build("menu-item-3");
